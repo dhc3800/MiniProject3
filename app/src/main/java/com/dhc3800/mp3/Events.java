@@ -29,6 +29,9 @@ public class Events {
 
     }
 
+    public String getDate() {
+        return date;
+    }
     public String getId() {
         return id;
     }

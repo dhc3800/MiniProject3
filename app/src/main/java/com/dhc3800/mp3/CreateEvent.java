@@ -208,7 +208,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
                         if (day < 10) {
                             lel = "0" + month +"/0"+day +  "/" + year;
                         } else {
-                            lel = month+"/" + "0"+day +  year;
+                            lel = "0" + month+"/" +day + "/" + year;
                         }
                     } else {
                         if (day < 10) {

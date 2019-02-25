@@ -8,17 +8,21 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton2"
-        android:clickable="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end|bottom"
-        android:src="@drawable/plussign"
-        android:scaleType="centerInside"
-        android:focusable="true"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        tools:srcCompat="@tools:sample/avatars"
+        android:backgroundTint="@color/Yellow"
+        app:elevation="1dp"
+        app:borderWidth="0dp"
+        app:pressedTranslationZ="1dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_add_turquoise_40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="70dp" />
 
 
     <android.support.v7.widget.RecyclerView

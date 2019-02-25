@@ -67,7 +67,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         final Events event = EventsList.get(position);
         holder.hostEmail.setText(event.getEmail());
         holder.eventName.setText(event.getEventName());
-        holder.numInterested.setText(Integer.toString(event.getNumberInterested()));
+        holder.numInterested.setText("# RSVP: "+Integer.toString(event.getNumberInterested()));
+        holder.date.setText(event.getDate());
 
         Glide.with(holder.eventImage.getContext()).load(event.getImageURL()).centerCrop().into(holder.eventImage);
         holder.itemView.setOnClickListener(new View.OnClickListener() {

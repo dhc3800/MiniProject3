@@ -96,14 +96,14 @@ public class EventDetails extends AppCompatActivity {
             public void onClick(View v) {
                 if (!checkBox.isChecked()) {
                     numberAttending = String.valueOf(Integer.parseInt(numberAttending) - 1);
-                    number.setText(numberAttending);
+                    number.setText("# RSVP: " + numberAttending);
                     eventsAttending.remove(id);
                     refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
                     rsvp.setValue(eventsAttending);
                 } else {
 
                     numberAttending = String.valueOf(Integer.parseInt(numberAttending) + 1);
-                    number.setText(numberAttending);
+                    number.setText("# RSVP: " + numberAttending);
                     eventsAttending.add(id);
                     refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
                     rsvp.setValue(eventsAttending);
@@ -127,7 +127,7 @@ public class EventDetails extends AppCompatActivity {
                 numberAttending = dataSnapshot.child("numberInterested").getValue().toString();
                 name.setText(eventName);
                 date.setText(eventDate);
-                number.setText(numberAttending);
+                number.setText("# RSVP: " + numberAttending);
                 description.setText(eventDescription);
                 Glide.with(imageView.getContext()).load(imageURL).centerCrop().into(imageView);
             }
@@ -141,7 +141,7 @@ public class EventDetails extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 numberAttending = dataSnapshot.child("numberInterested").getValue().toString();
-                number.setText(numberAttending);
+                number.setText("# RSVP: " +numberAttending);
             }
 
             @Override
