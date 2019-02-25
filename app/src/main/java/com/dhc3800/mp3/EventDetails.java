@@ -49,6 +49,7 @@ public class EventDetails extends AppCompatActivity {
     private boolean attending;
     private ArrayList<String> eventsAttending = new ArrayList<>();
     DatabaseReference rsvp;
+    private boolean check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,12 @@ public class EventDetails extends AppCompatActivity {
                         eventsAttending.add(event.getValue().toString());
                     }
                 }
+                if (eventsAttending != null && eventsAttending.contains(id)) {
+                    check = true;
+                }
+                if (check) {
+                    checkBox.setChecked(true);
+                }
 
             }
             @Override
@@ -76,11 +83,8 @@ public class EventDetails extends AppCompatActivity {
             }
         });
         checkBox = findViewById(R.id.checkBox);
-        if (eventsAttending != null && eventsAttending.contains(id)) {
-            checkBox.setTag(true);
-        } else {
-            checkBox.setChecked(false);
-        }
+
+
         imageView = findViewById(R.id.imageView2);
         description = findViewById(R.id.description);
         date = findViewById(R.id.date);
@@ -90,23 +94,26 @@ public class EventDetails extends AppCompatActivity {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkBox.isChecked()) {
-                    if (eventsAttending.contains(id)) {
-                        numberAttending = String.valueOf(Integer.valueOf(numberAttending) - 1);
-                        number.setText(numberAttending);
-                        eventsAttending.remove(id);
-                        refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
-                        rsvp.setValue(eventsAttending);
-                    }
+                if (!checkBox.isChecked()) {
+                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) - 1);
+                    number.setText(numberAttending);
+                    eventsAttending.remove(id);
+                    refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
+                    rsvp.setValue(eventsAttending);
                 } else {
-                    numberAttending = String.valueOf(Integer.valueOf(numberAttending)+1);
+
+                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) + 1);
                     number.setText(numberAttending);
                     eventsAttending.add(id);
                     refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
                     rsvp.setValue(eventsAttending);
                 }
-            }
-        });
+        }});
+
+
+//        if (eventsAttending.contains(id)) {
+//            check = true;
+//        }
 
 
         refEvents = database.getReference("events").child(id);
@@ -142,6 +149,9 @@ public class EventDetails extends AppCompatActivity {
 
             }
         });
+        System.out.println(eventsAttending);
+
+
 //        refEvents.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
