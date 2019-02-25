@@ -97,7 +97,7 @@ public class EventsPage extends AppCompatActivity {
                     String description = snapshot.child("eventDescription").getValue().toString();
                     String date = snapshot.child("date").getValue().toString();
                     Long timestamp = Long.valueOf(snapshot.child("time").getValue().toString());
-                    eventsList.add(new Events(id, email, imageURL, eventName, numInterested, description, date, timestamp));
+                    eventsList.add(0, new Events(id, email, imageURL, eventName, numInterested, description, date, timestamp));
                 }
                 eventsAdapter.notifyDataSetChanged();
             }
