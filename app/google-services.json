@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "95624668326",
+    "firebase_url": "https://miniproject3-1e76d.firebaseio.com",
+    "project_id": "miniproject3-1e76d",
+    "storage_bucket": "miniproject3-1e76d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95624668326:android:fac1ab9444da126c",
+        "android_client_info": {
+          "package_name": "com.dhc3800.mp3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95624668326-93uv93p0nr7e7ncg4hhengml5q9df41u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkAOJLiZtE_u_ohtU1qVBKHG22dLFu0js"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

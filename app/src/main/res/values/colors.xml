@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3DC072D8</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="loginBackground">#483D8B</color>
+    <color name="loginText">#FFFAFA</color>
+    <color name="social">#00BFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="Ruby">#C02F1D</color>
+    <color name="Yellow">#BBBB00</color>
+
+    <color name="DarkestAlice">#107896</color>
+    <color name="LighterAlice">#43ABC9</color>
+    <color name="orange">#F58B4C</color>
+    <color name="tint">#FEFBDE </color>
+</resources>
