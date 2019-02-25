@@ -45,7 +45,7 @@ public class EventsPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_page);
-
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         createEvent = findViewById(R.id.floatingActionButton2);
@@ -56,6 +56,7 @@ public class EventsPage extends AppCompatActivity {
             }
         });
         database = FirebaseDatabase.getInstance();
+
         userID = mAuth.getCurrentUser().getUid();
         eventsList = new ArrayList<>();
 
@@ -84,6 +85,7 @@ public class EventsPage extends AppCompatActivity {
 
     private void fetchData() {
         events = database.getReference("events").orderByChild("time");
+        events.keepSynced(true);
         events.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

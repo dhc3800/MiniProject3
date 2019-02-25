@@ -59,7 +59,9 @@ public class EventDetails extends AppCompatActivity {
         final String id = b.getString("EventID");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
         rsvp = database.getReference().child("rsvp").child(mAuth.getCurrentUser().getUid());
+        rsvp.keepSynced(true);
         rsvp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -117,6 +119,7 @@ public class EventDetails extends AppCompatActivity {
 
 
         refEvents = database.getReference("events").child(id);
+        refEvents.keepSynced(true);
         refEvents.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
