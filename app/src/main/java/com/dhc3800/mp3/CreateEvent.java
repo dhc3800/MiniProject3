@@ -45,6 +45,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity to create an event
+ */
 public class CreateEvent extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener{
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
@@ -127,6 +130,12 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    /**
+     * retrieving an image from camera gallery
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
@@ -164,6 +173,9 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * uploading the image to firebase storage
+     */
     private void upload() {
         final String eventName = title.getText().toString();
         final String eventDescription = description.getText().toString();
@@ -242,6 +254,14 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    /**
+     * uploading the event to firebase
+     * @param userID
+     * @param email
+     * @param title
+     * @param description
+     * @param imageURL
+     */
     private void writeEvent(String userID, String email, String title, String description, String imageURL) {
         String key = mRef.child("events").push().getKey();
         Map<String, Object> eventValues = new HashMap<>();
@@ -254,6 +274,14 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         mRef.updateChildren(childUpdates);
 
     }
+
+    /**
+     * checking if a date was selected and assigning the String date the value
+     * @param view
+     * @param year
+     * @param month
+     * @param dayOfMonth
+     */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = Integer.toString(month + 1) + "/" + Integer.toString(dayOfMonth) + "/" + Integer.toString(year);

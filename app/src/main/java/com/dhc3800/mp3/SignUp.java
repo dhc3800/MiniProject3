@@ -60,7 +60,11 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-
+    /**
+     * signing the user up with firebase, assigining a unique id and uploading the information to the database
+     * @param email
+     * @param pass
+     */
     public void signUp(String email, String pass) {
         mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override

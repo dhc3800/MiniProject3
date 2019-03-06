@@ -63,6 +63,10 @@ public class EventDetails extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         final DatabaseReference eventsViewed = database.getReference().child("views").child(mAuth.getCurrentUser().getUid());
+
+        /**
+         * update how many events the user has viewed
+         */
         eventsViewed.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -81,6 +85,10 @@ public class EventDetails extends AppCompatActivity {
 
         rsvp = database.getReference().child("rsvp").child(mAuth.getCurrentUser().getUid());
         rsvp.keepSynced(true);
+
+        /**
+         * retrieve the rsvp number
+         */
         rsvp.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -112,6 +120,10 @@ public class EventDetails extends AppCompatActivity {
         number = findViewById(R.id.number);
         name = findViewById(R.id.name);
         checkBox = findViewById(R.id.checkBox);
+
+        /**
+         * changing the rsvp number based on the result of clicking interested
+         */
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +151,9 @@ public class EventDetails extends AppCompatActivity {
 
         refEvents = database.getReference("events").child(id);
         refEvents.keepSynced(true);
+        /**
+         * retrieving the event information
+         */
         refEvents.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

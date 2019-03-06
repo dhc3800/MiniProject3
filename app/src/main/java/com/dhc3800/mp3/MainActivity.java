@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * checks if the user is currently logged in, and if so moves the user to the eventspage
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -63,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * function to sign a user in and authorize
+     * @param email
+     * @param pass
+     */
     public void signIn(String email, String pass){
         mAuth.signInWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

@@ -36,8 +36,10 @@ public class Stats extends AppCompatActivity {
     private BarGraphSeries<DataPoint> viewSeries;
 
 
-
-
+    /**
+     * initializes the graphs and sets boundaries
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,9 @@ public class Stats extends AppCompatActivity {
 
     }
 
-
+    /**
+     * retrieves data used to display graphs
+     */
     public void fetchData() {
         time = mDatabase.getReference("time").child(mAuth.getCurrentUser().getUid());
         time.keepSynced(true);
@@ -133,6 +137,9 @@ public class Stats extends AppCompatActivity {
         });
     }
 
+    /**
+     * updates graph one whenever data is changed
+     */
     public void updateGraph() {
         DataPoint[] timess = new DataPoint[times.size()];
         for (int i = 0; i < times.size(); i++) {
@@ -141,6 +148,9 @@ public class Stats extends AppCompatActivity {
         timeSeries.resetData(timess);
     }
 
+    /**
+     * updates graph two whenever data is changed
+     */
     public void updateGraph2() {
         DataPoint[] viewss = new DataPoint[4];
         viewss[0] = new DataPoint(0, 0);

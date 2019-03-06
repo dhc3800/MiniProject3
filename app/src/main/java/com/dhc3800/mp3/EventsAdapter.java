@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -26,6 +25,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         public TextView eventName;
         public TextView numInterested;
         public CardView cardView;
+
+        /**
+         * Viewholder class
+         * @param view
+         */
         public ViewHolder(View view) {
             super(view);
             this.eventImage = view.findViewById(R.id.image);
@@ -51,7 +55,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder
         return EventsList.get(position);
     }
 
-
+    /**
+     * initializing the adapter class
+     * @param EventsList
+     */
     public EventsAdapter(ArrayList<Events> EventsList) {
         this.EventsList = EventsList;
     }

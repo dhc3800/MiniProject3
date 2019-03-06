@@ -75,6 +75,9 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
         fetchData();
     }
 
+    /**
+     * changing onDestroy to calculate the time a user has spent
+     */
     @Override
     public void onDestroy() {
 
@@ -86,6 +89,11 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    /**
+     * inflating the menu
+     * @param menu
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.events_page, menu);
@@ -94,8 +102,11 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
     }
 
 
-
-
+    /**
+     * setting what happens when user clicks on log out aka logging out
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -108,6 +119,9 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    /**
+     * retrieves data from firebase to display in the recycler view
+     */
     private void fetchData() {
         events = database.getReference("events").orderByChild("time");
         events.keepSynced(true);
@@ -149,6 +163,10 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
 
         }
     }
+
+    /**
+     * updating the time a user has spent and uploading it to firebase
+     */
     public void updateTime() {
         final DatabaseReference time = database.getReference("time").child(mAuth.getCurrentUser().getUid());
         Date end = new Date();
