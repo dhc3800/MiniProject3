@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
     private EditText email;
     private EditText password;
@@ -33,21 +33,9 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.editText);
         password = findViewById(R.id.editText2);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn(email.getText().toString(), password.getText().toString());
-            }
-
-
-        });
+        login.setOnClickListener(this);
         signup = findViewById(R.id.signup);
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SignUp.class));
-            }
-        });
+        signup.setOnClickListener(this);
 
 
 
@@ -55,9 +43,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.signup:
+                startActivity(new Intent(MainActivity.this, SignUp.class));
+            case R.id.button:
+                signIn(email.getText().toString(), password.getText().toString());
+
+
+        }
+
+    }
+
     /**
      * checks if the user is currently logged in, and if so moves the user to the eventspage
      */
+
+
+
     @Override
     public void onStart() {
         super.onStart();

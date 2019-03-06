@@ -7,7 +7,7 @@
     tools:context=".EventsPage">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/viewStats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -18,22 +18,22 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/createEvent"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         android:backgroundTint="@color/Yellow"
-        app:elevation="1dp"
-        app:borderWidth="0dp"
-        app:pressedTranslationZ="1dp"
         android:clickable="true"
         android:focusable="true"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_add_turquoise_40dp"
+        app:borderWidth="0dp"
+        app:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="70dp" />
+        app:maxImageSize="70dp"
+        app:pressedTranslationZ="1dp" />
 
 
     <android.support.v7.widget.RecyclerView

@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class EventDetails extends AppCompatActivity {
+public class EventDetails extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
     private FloatingActionButton createEvent;
     private FirebaseDatabase database;
@@ -51,7 +51,30 @@ public class EventDetails extends AppCompatActivity {
     private ArrayList<String> eventsAttending = new ArrayList<>();
     DatabaseReference rsvp;
     private boolean check;
+    private String id;
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.checkBox:
+                if (!checkBox.isChecked()) {
+                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) - 1);
+                    number.setText("# RSVP: " + numberAttending);
+                    eventsAttending.remove(id);
+                    refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
+                    rsvp.setValue(eventsAttending);
+                } else {
+
+                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) + 1);
+                    number.setText("# RSVP: " + numberAttending);
+                    eventsAttending.add(id);
+                    refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
+                    rsvp.setValue(eventsAttending);
+                }
+
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +82,7 @@ public class EventDetails extends AppCompatActivity {
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Bundle b = getIntent().getExtras();
-        final String id = b.getString("EventID");
+        id = b.getString("EventID");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         final DatabaseReference eventsViewed = database.getReference().child("views").child(mAuth.getCurrentUser().getUid());
@@ -124,24 +147,10 @@ public class EventDetails extends AppCompatActivity {
         /**
          * changing the rsvp number based on the result of clicking interested
          */
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!checkBox.isChecked()) {
-                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) - 1);
-                    number.setText("# RSVP: " + numberAttending);
-                    eventsAttending.remove(id);
-                    refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
-                    rsvp.setValue(eventsAttending);
-                } else {
+        checkBox.setOnClickListener(this);
 
-                    numberAttending = String.valueOf(Integer.parseInt(numberAttending) + 1);
-                    number.setText("# RSVP: " + numberAttending);
-                    eventsAttending.add(id);
-                    refEvents.child("numberInterested").setValue(Integer.valueOf(numberAttending));
-                    rsvp.setValue(eventsAttending);
-                }
-        }});
+
+
 
 
 //        if (eventsAttending.contains(id)) {
@@ -157,11 +166,11 @@ public class EventDetails extends AppCompatActivity {
         refEvents.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventName = dataSnapshot.child("eventName").getValue().toString();
-                eventDescription = dataSnapshot.child("eventDescription").getValue().toString();
-                eventDate = dataSnapshot.child("date").getValue().toString();
-                imageURL = dataSnapshot.child("imageURL").getValue().toString();
-                numberAttending = dataSnapshot.child("numberInterested").getValue().toString();
+                eventName = Utils.snapshotValue(dataSnapshot.child("eventName"));
+                eventDescription = Utils.snapshotValue(dataSnapshot.child("eventDescription"));
+                eventDate = Utils.snapshotValue(dataSnapshot.child("date"));
+                imageURL = Utils.snapshotValue(dataSnapshot.child("imageURL"));
+                numberAttending = Utils.snapshotValue(dataSnapshot.child("numberInterested"));
                 name.setText(eventName);
                 date.setText(eventDate);
                 number.setText("# RSVP: " + numberAttending);
@@ -177,7 +186,7 @@ public class EventDetails extends AppCompatActivity {
         refEvents.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                numberAttending = dataSnapshot.child("numberInterested").getValue().toString();
+                numberAttending = Utils.snapshotValue(dataSnapshot.child("numberInterested"));
                 number.setText("# RSVP: " +numberAttending);
             }
 
@@ -187,6 +196,8 @@ public class EventDetails extends AppCompatActivity {
             }
         });
         System.out.println(eventsAttending);
+
+
 
 
 //        refEvents.addValueEventListener(new ValueEventListener() {

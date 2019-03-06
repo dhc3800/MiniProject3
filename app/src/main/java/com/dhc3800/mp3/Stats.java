@@ -100,7 +100,7 @@ public class Stats extends AppCompatActivity {
                 times.add(0.0);
                 double max = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Double y = Double.valueOf(snapshot.getValue().toString());
+                    Double y = Double.valueOf(Utils.snapshotValue(snapshot));
                     times.add(y);
                     if (y > max) {
                         max = y;
@@ -119,7 +119,7 @@ public class Stats extends AppCompatActivity {
         views.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mView = Integer.valueOf(dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue().toString());
+                mView = Integer.valueOf(Utils.snapshotValue(dataSnapshot.child(mAuth.getCurrentUser().getUid())));
                 sum = 0.0;
                 count = 0.0;
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {

@@ -17,13 +17,34 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private EditText password;
     private EditText email;
     private TextView login;
     private EditText password2;
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login:
+                startActivity(new Intent(SignUp.this, MainActivity.class));
+            case R.id.SignUp:
+                String pass = password.getText().toString();
+                String pass2 = password2.getText().toString();
+                if (pass.length() < 6) {
+                    Toast.makeText(SignUp.this, "Password is not strong enough", Toast.LENGTH_LONG).show();
+                } else if (!pass.equals(pass2)) {
+                    Toast.makeText(SignUp.this, "Passwords do not match" + password.getText().toString(), Toast.LENGTH_LONG).show();
+                } else {
+                    signUp(email.getText().toString(), password.getText().toString());
+                }
+
+
+
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +56,9 @@ public class SignUp extends AppCompatActivity {
         password2 = findViewById(R.id.password2);
         email = findViewById(R.id.email);
         login = findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SignUp.this, MainActivity.class));
-            }
-        });
+        login.setOnClickListener(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String pass = password.getText().toString();
-                String pass2 = password2.getText().toString();
-                if (pass.length() < 6) {
-                    Toast.makeText(SignUp.this, "Password is not strong enough", Toast.LENGTH_LONG).show();
-                } else if (!pass.equals(pass2)) {
-                    Toast.makeText(SignUp.this, "Passwords do not match" + password.getText().toString(), Toast.LENGTH_LONG).show();
-                } else {
-                    signUp(email.getText().toString(), password.getText().toString());
-                }
-            }
-        });
+        signup.setOnClickListener(this);
 
 
     }

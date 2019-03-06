@@ -33,7 +33,6 @@ import java.util.Date;
 
 public class EventsPage extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
-    private FloatingActionButton createEvent;
     private FirebaseDatabase database;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -46,7 +45,6 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
     private FirebaseAnalytics mFirebaseAnalytics;
     private long startTime;
     private long endTime;
-    private FloatingActionButton stats;
     private boolean xd = true;
 
     @Override
@@ -61,8 +59,8 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
-        findViewById(R.id.floatingActionButton2).setOnClickListener(this);
-        findViewById(R.id.floatingActionButton).setOnClickListener(this);
+        findViewById(R.id.viewStats).setOnClickListener(this);
+        findViewById(R.id.createEvent).setOnClickListener(this);
 
         userID = mAuth.getCurrentUser().getUid();
         eventsList = new ArrayList<>();
@@ -130,14 +128,14 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventsList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String id = snapshot.child("id").getValue().toString();
-                    String email = snapshot.child("email").getValue().toString();
-                    String imageURL = snapshot.child("imageURL").getValue().toString();
-                    String eventName = snapshot.child("eventName").getValue().toString();
-                    int numInterested = Integer.valueOf(snapshot.child("numberInterested").getValue().toString());
-                    String description = snapshot.child("eventDescription").getValue().toString();
-                    String date = snapshot.child("date").getValue().toString();
-                    Long timestamp = Long.valueOf(snapshot.child("time").getValue().toString());
+                    String id  = Utils.snapshotValue(snapshot.child("id"));
+                    String email = Utils.snapshotValue(snapshot.child("email"));
+                    String imageURL = Utils.snapshotValue(snapshot.child("imageURL"));
+                    String eventName = Utils.snapshotValue(snapshot.child("eventName"));
+                    int numInterested = Integer.valueOf(Utils.snapshotValue(snapshot.child("numberInterested")));
+                    String description = Utils.snapshotValue(snapshot.child("eventDescription"));
+                    String date = Utils.snapshotValue(snapshot.child("date"));
+                    Long timestamp = Long.valueOf(Utils.snapshotValue(snapshot.child("time")));
                     eventsList.add(0, new Events(id, email, imageURL, eventName, numInterested, description, date, timestamp));
                 }
                 eventsAdapter.notifyDataSetChanged();
@@ -155,11 +153,14 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.floatingActionButton2:
-                startActivity(new Intent(EventsPage.this, CreateEvent.class));
-
-            case R.id.floatingActionButton:
-                startActivity(new Intent(EventsPage.this, Stats.class));
+            case R.id.createEvent:
+                Intent intent = new Intent(EventsPage.this, CreateEvent.class);
+                startActivity(intent);
+                break;
+            case R.id.viewStats:
+                Intent i = new Intent(EventsPage.this, Stats.class);
+                startActivity(i);
+                break;
 
         }
     }
@@ -177,7 +178,7 @@ public class EventsPage extends AppCompatActivity implements View.OnClickListene
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<Double> time2 = new ArrayList<>();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    time2.add(Double.valueOf(snapshot.getValue().toString()));
+                    time2.add(Double.valueOf(Utils.snapshotValue(snapshot)));
                 }
                 Long l = new Long(endTime - startTime);
                 double d = l.doubleValue() / 1000;
