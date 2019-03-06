@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,11 +56,29 @@ public class EventDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         Bundle b = getIntent().getExtras();
         final String id = b.getString("EventID");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true);
+        final DatabaseReference eventsViewed = database.getReference().child("views").child(mAuth.getCurrentUser().getUid());
+        eventsViewed.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    eventsViewed.setValue(Integer.valueOf(dataSnapshot.getValue().toString()) + 1);
+                } else {
+                    eventsViewed.setValue(1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         rsvp = database.getReference().child("rsvp").child(mAuth.getCurrentUser().getUid());
         rsvp.keepSynced(true);
         rsvp.addListenerForSingleValueEvent(new ValueEventListener() {

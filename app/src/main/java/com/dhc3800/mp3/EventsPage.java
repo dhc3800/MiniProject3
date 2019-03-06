@@ -1,6 +1,7 @@
 package com.dhc3800.mp3;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,8 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class EventsPage extends AppCompatActivity {
+public class EventsPage extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private FloatingActionButton createEvent;
     private FirebaseDatabase database;
@@ -40,22 +43,26 @@ public class EventsPage extends AppCompatActivity {
     private String userID;
     private DatabaseReference refEvents;
     private Query events;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private long startTime;
+    private long endTime;
+    private FloatingActionButton stats;
+    private boolean xd = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_page);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        createEvent = findViewById(R.id.floatingActionButton2);
-        createEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(EventsPage.this, CreateEvent.class));
-            }
-        });
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         database = FirebaseDatabase.getInstance();
+        Date enter = new Date();
+        startTime = enter.getTime();
+
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mAuth = FirebaseAuth.getInstance();
+        findViewById(R.id.floatingActionButton2).setOnClickListener(this);
+        findViewById(R.id.floatingActionButton).setOnClickListener(this);
 
         userID = mAuth.getCurrentUser().getUid();
         eventsList = new ArrayList<>();
@@ -69,16 +76,34 @@ public class EventsPage extends AppCompatActivity {
     }
 
     @Override
+    public void onDestroy() {
+
+        if (xd) {
+            updateTime();
+        }
+        super.onDestroy();
+
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.events_page, menu);
         final MenuItem Item = menu.findItem(R.id.LogOut);
         return true;
     }
 
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        updateTime();
         mAuth.signOut();
-        EventsPage.this.startActivity(new Intent(EventsPage.this, MainActivity.class));
+        Intent intent = new Intent(EventsPage.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        EventsPage.this.startActivity(intent);
         return true;
     }
 
@@ -90,7 +115,7 @@ public class EventsPage extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventsList.clear();
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String id = snapshot.child("id").getValue().toString();
                     String email = snapshot.child("email").getValue().toString();
                     String imageURL = snapshot.child("imageURL").getValue().toString();
@@ -112,4 +137,52 @@ public class EventsPage extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.floatingActionButton2:
+                startActivity(new Intent(EventsPage.this, CreateEvent.class));
+
+            case R.id.floatingActionButton:
+                startActivity(new Intent(EventsPage.this, Stats.class));
+
+        }
+    }
+    public void updateTime() {
+        final DatabaseReference time = database.getReference("time").child(mAuth.getCurrentUser().getUid());
+        Date end = new Date();
+        endTime = end.getTime();
+        xd = false;
+        time.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<Double> time2 = new ArrayList<>();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                    time2.add(Double.valueOf(snapshot.getValue().toString()));
+                }
+                Long l = new Long(endTime - startTime);
+                double d = l.doubleValue() / 1000;
+                time2.add(d);
+                time.setValue(time2);
+
+//                if (dataSnapshot.getValue() != null) {
+//                    Long l = new Long(endTime - startTime);
+//                    double d = l.doubleValue() / 1000;
+//                    time.setValue((Double.valueOf(dataSnapshot.getValue().toString()) + d));
+//                } else {
+//                    Long l = new Long(endTime - startTime);
+//                    double d = l.doubleValue() / 1000;
+//                    time.setValue((d));
+//                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 }
+

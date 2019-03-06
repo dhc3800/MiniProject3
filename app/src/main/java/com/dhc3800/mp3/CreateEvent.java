@@ -201,7 +201,6 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             public void onComplete(@NonNull Task<Uri> Task) {
                 if (Task.isSuccessful()) {
                     downloadUrl = Task.getResult();
-                    Date current = new Date();
                     int rsvp = 1;
                     String lel;
                     if (month < 10) {
@@ -217,6 +216,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
                             lel = month+"/" + day + "/" + year;
                         }
                     }
+                    Date current = new Date();
                     Events event = new Events(eventID, userEmail, downloadUrl.toString(), eventName, rsvp, eventDescription, lel, current.getTime());
                     mRef.child(eventID).setValue(event);
                     ArrayList<String> users = new ArrayList<>();
