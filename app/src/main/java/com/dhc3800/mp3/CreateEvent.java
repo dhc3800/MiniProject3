@@ -214,20 +214,8 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
                 if (Task.isSuccessful()) {
                     downloadUrl = Task.getResult();
                     int rsvp = 1;
-                    String lel;
-                    if (month < 10) {
-                        if (day < 10) {
-                            lel = "0" + month +"/0"+day +  "/" + year;
-                        } else {
-                            lel = "0" + month+"/" +day + "/" + year;
-                        }
-                    } else {
-                        if (day < 10) {
-                            lel = month + "/" + "0" + day + "/" + year;
-                        } else {
-                            lel = month+"/" + day + "/" + year;
-                        }
-                    }
+                    String lel = Utils.dateAdd0(year, month, day);
+
                     Date current = new Date();
                     Events event = new Events(eventID, userEmail, downloadUrl.toString(), eventName, rsvp, eventDescription, lel, current.getTime());
                     mRef.child(eventID).setValue(event);
@@ -241,18 +229,8 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-
-
-
-
-
-
-
     }
 
-    private void setEditingEnabled(boolean enabled) {
-
-    }
 
     /**
      * uploading the event to firebase
@@ -284,7 +262,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
      */
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        String date = Integer.toString(month + 1) + "/" + Integer.toString(dayOfMonth) + "/" + Integer.toString(year);
+        String date = Utils.dateConvert(year, month, dayOfMonth);
         this.year = year;
         this.month = month + 1;
         this.day = dayOfMonth;
